@@ -1,6 +1,6 @@
 <?php
 /*
- Plugin Name:Wp Js Crop
+ Plugin Name:Js Crop
  Plugin URI:
  Description: Image cropping plugin for WordPress
  Version: 1.0.0
@@ -15,7 +15,7 @@ class wpJsCrop extends WP_Widget{
     public function __construct() {
         parent::__construct(
             'wpJsCrop', // Base ID
-            'Wp Js Crop', // Name
+            'Js Crop', // Name
             array( 'description' => __( 'Image cropping plugin for WordPress', 'wp-js-crop' ), ) // Args
             );
        
@@ -33,7 +33,7 @@ class wpJsCrop extends WP_Widget{
             $title = $instance[ 'title' ];
         }
         else {
-            $title = __( 'Wp Js Crop', 'wp-js-crop' );
+            $title = __( 'Js Crop', 'wp-js-crop' );
         }
         
         
@@ -125,37 +125,34 @@ class wpJsCrop extends WP_Widget{
  //function to process ajax content  
  public function process_image(){
 
-    $fileName = wp_get_current_user()->user_login.'_'.time();
-    $outPutFile = wp_upload_dir()['path'].'/'. $fileName.'.png';
-    
-    $upload_file = wp_upload_bits(basename($outPutFile ), null, str_replace('data:image/png;base64,','',$_POST['blob']));
-    
-
-    if (!$upload_file['error']) :
-        $wp_filetype = wp_check_filetype($fileName, null );
-        $attachment = array(
-            'post_mime_type' => $wp_filetype['type'],
-            'post_parent' => $parent_post_id,
-            'post_title' => preg_replace('/\.[^.]+$/', '', $fileName),
-            'post_content' => '',
-            'post_status' => 'inherit'
-        );
-        $attachment_id = wp_insert_attachment( $attachment, $upload_file['file'], $parent_post_id );
-        if (!is_wp_error($attachment_id)) :
-                require_once(ABSPATH . "wp-admin" . '/includes/image.php');
-                $attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload_file['file'] );
-                wp_update_attachment_metadata( $attachment_id,  $attachment_data );
-            endif;
-    
-   
-      echo 'true';
-        else:
-            echo 'false';
-        endif;
+    $fileName = wp_get_current_user()->user_login.'_'.time().'.png';
+    $outPutFile = wp_upload_dir()['path'].'/'. $fileName;
+    $upload_file =   file_put_contents($outPutFile, base64_decode(str_replace(' ', '+',str_replace('data:image/png;base64,', '',$_POST['blob']))));
  
+    
+    $attachment = array(
+        'guid'           => wp_upload_dir()['url'] . '/' .  $fileName, 
+        'post_mime_type' => wp_check_filetype( basename( $fileName ), null )['type'],
+        'post_title'     =>  sanitize_file_name( pathinfo( basename( $outPutFile), PATHINFO_FILENAME ) ),
+        'post_content'   => '',
+        'post_status'    => 'inherit'
+    );
      
+    $attach_id = wp_insert_attachment( $attachment );
 
-  wp_die();  
+if(is_numeric($attach_id)):
+// Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
+require_once( ABSPATH . 'wp-admin/includes/image.php' );
+ 
+// Generate the metadata for the attachment, and update the database record.
+$attach_data = wp_generate_attachment_metadata( $attach_id,  $outPutFile);
+
+wp_update_attachment_metadata( $attach_id, $attach_data );
+echo __('Image sucessfully uploaded','wp-js-crop');
+else:
+    echo __('Image could not be uploaded','wp-js-crop');
+endif;
+wp_die();  
 }
 
 

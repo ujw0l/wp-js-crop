@@ -12,11 +12,11 @@ window.addEventListener('load', () => {
             xhttp.open("POST", cropParams.my_ajax_url, true);
             xhttp.responseType = "text";
             xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;');
-            xhttp.addEventListener('load', response => {
+            xhttp.addEventListener('load', event => {
 
                 if (event.target.status >= 200 && event.target.status < 400) {
 
-                    console.log(event.target.response);
+                    alert(event.target.response);
                 } else {
                     alert(event.target.response);
                 }
@@ -41,14 +41,31 @@ window.addEventListener('load', () => {
             reader.addEventListener('load', event => {
                 let dropedImg = new Image();
                 dropedImg.src = event.target.result;
-                dropedImg.addEventListener('load', event => jCrop.createOverlay(event.target), { saveButton: false }, [{
+                dropedImg.addEventListener('load', event => jCrop.createOverlay(event.target, { saveButton: false }, [{
                     buttonText: '&#9729;',
                     buttonTitle: 'Upload Image',
                     relParam: js_crop_params,
                     callBack: (imgBlob, cropParams) => {
 
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.open("POST", cropParams.my_ajax_url, true);
+                        xhttp.responseType = "text";
+                        xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;');
+                        xhttp.addEventListener('load', event => {
+
+                            if (event.target.status >= 200 && event.target.status < 400) {
+
+                                alert(event.target.response);
+                            } else {
+                                alert(event.target.response);
+                            }
+
+                        })
+                        xhttp.send("action=process_image&blob=" + imgBlob);
+
+
                     }
-                }]);
+                }]));
             });
 
         }

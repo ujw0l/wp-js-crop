@@ -47,6 +47,7 @@ class jsCrop {
 
     createOverlay(img, param2, param3) {
 
+
         let imgType = undefined != param2 && undefined != param2.imageType && 'jpeg' == param2.imageType ? param2.imageType : 'png';
         let imgQuality = undefined != param2 && undefined != param2.imageQuality ? param2.imageQuality : '1';
 
@@ -430,7 +431,7 @@ class jsCrop {
                 imgEl.height = opImgDim.height;
                 imgEl.width = opImgDim.width;
                 imgEl.src = bufferImg.src;
-                console.log(imgEl.style.margin);
+
             });
         }
     }
@@ -723,7 +724,6 @@ class jsCrop {
         if (undefined != cropRect) {
             let imgEl = document.querySelector('#js-crop-image');
 
-            console.log(imgEl);
             let startXy = cropRect.getAttribute('data-start-xy').split(',');
             let newStartY, newStartX;
             switch (event.code) {
