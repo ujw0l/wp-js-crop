@@ -1,0 +1,26 @@
+{
+  "name": "wp-js-crop",
+  "version": "1.0.0",
+  "description": "Wordpress plugin to crop and upload images",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ujw0l/wp-js-crop.git"
+  },
+  "keywords": [
+    "worpress-plugin",
+    "crop-image"
+  ],
+  "author": "UjW0L",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/ujw0l/wp-js-crop/issues"
+  },
+  "homepage": "https://wordpress.org/plugins/js-crop/",
+  "dependencies": {
+    "js-crop": "^1.5.0"
+  }
+}
