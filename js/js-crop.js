@@ -158,7 +158,7 @@ class jsCrop {
     *@param overlayDiv Overlay div object 
     *@param imgSrc  Image source of image to be loaded
     *@param imgDim  Image dimension to load
-	*@param param2 for future extension
+    *@param param2 for future extension
     */
 
     createToolbar(overlayDiv, imgSrc, imgDim, param2, param3) {
@@ -171,7 +171,7 @@ class jsCrop {
 
         let btnFontColor = undefined != param2 && undefined != param2.customColor && undefined != param2.customColor.buttonFontColor ? param2.customColor.buttonFontColor : 'rgba(255,255,255,1)';
         let btnBgColor = undefined != param2 && undefined != param2.customColor && undefined != param2.customColor.buttonBgColor ? param2.customColor.buttonBgColor : 'rgba(0,0,0,1)';
-        let btnStyle = `line-height:1;color:${btnFontColor};opacity:0;font-size:300%;cursor:pointer;border-radius:0%;margin-bottom:3px;background-color:${btnBgColor};text-align:center;width:98%;height:${toolbar.offsetWidth - 6}px;border:1px solid ${btnBgColor};box-shadow:-1px -1px 10px ${btnBgColor};`;
+        let btnStyle = `line-height:1.1;color:${btnFontColor};opacity:0;font-size:300%;cursor:pointer;border-radius:0%;margin-bottom:3px;background-color:${btnBgColor};text-align:center;width:98%;height:${toolbar.offsetWidth - 6}px;border:1px solid ${btnBgColor};box-shadow:-1px -1px 10px ${btnBgColor};`;
         let btnMouseenter = `this.style.boxShadow ='-2px -2px 10px ${btnBgColor}'; this.style.borderRadius='20%'`;
         let btnMouseleave = `this.style.boxShadow ='-1px -1px 1px ${btnBgColor}';this.style.borderRadius='25%'`;
 
@@ -182,7 +182,7 @@ class jsCrop {
         cropIconDiv.setAttribute('onmouseenter', btnMouseenter);
         cropIconDiv.setAttribute('onmouseleave', btnMouseleave);
         cropIconDiv.innerHTML = '&#8862;';
-        cropIconDiv.addEventListener('click', () => this.addCropEventListener(event));
+        cropIconDiv.addEventListener('click', event => this.addCropEventListener(event));
         toolbar.appendChild(cropIconDiv);
 
 
@@ -333,7 +333,7 @@ class jsCrop {
                 event.target.addEventListener('mousemove', event => this.createCropBox(event));
 
             });
-            e.target.innerHTML = '&#10538;';
+            e.target.innerHTML = '&#9747;';
             e.target.title = 'Crop';
 
         } else if ('crop-ready' === imgEl.getAttribute('data-crop-status')) {
@@ -567,7 +567,7 @@ class jsCrop {
     *@param screenHeight  window.innerHeight
     *@param imageActualWidth  actual width of image
     *@param imageActualHeight  actual height of image
-	*@return object object with optimized image width and height
+    *@return object object with optimized image width and height
     */
     getOptimizedImageSize(screenWidth, screenHeight, imageActualWidth, imageActualHeight) {
 
@@ -713,11 +713,11 @@ class jsCrop {
     }
 
     /*
-	*Handle keystroke event
-	* 
-	*@param e Key stroke event
-	*
-	*/
+    *Handle keystroke event
+    * 
+    *@param e Key stroke event
+    *
+    */
     onKeyStroke(event) {
         let cropRect = document.querySelector('#cropRect');
 
