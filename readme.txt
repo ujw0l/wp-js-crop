@@ -1,6 +1,6 @@
 === Js Crop ===
 Contributors: ujw0l
-Tags:  Image upload,  Image crop, 
+Tags:  block,Image upload,  Image crop, 
 Requires at least: 5.0
 Tested up to: 5.9.1
 Requires PHP: 7.0
