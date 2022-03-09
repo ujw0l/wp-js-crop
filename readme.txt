@@ -1,17 +1,17 @@
 === Js Crop ===
 Contributors: ujw0l
-Tags:  image upload,  Image crop, 
-Requires at least: 4.0
-Tested up to: 5.5
-Requires PHP: 5.0
-Stable tag: 1.2.1
+Tags:  block,Image upload,  Image crop, 
+Requires at least: 5.0
+Tested up to: 5.9.1
+Requires PHP: 7.0
+Stable tag: 2.0.0
 License: GPLv2
 
-Plugin which enables user to take edit image and upload which can be access at media page, 
+Plugin which enables user to take edit image and upload it which can be access at media page, 
 
 
 == Description ==
-Plugin provides the option of cropping image by browsing/draging and droping image on widget area on the front end if user is logged in.
+Plugin provides the option of cropping image by browsing/draging and droping image on the front end if user is logged in.
 User can then upload the cropped Images which can be access through media page in admin dashboard. 
 
 
@@ -19,7 +19,7 @@ User can then upload the cropped Images which can be access through media page i
 
 1. Upload the folder `wpJsCrop` and its contents to the `/wp-content/plugins/` directory or use the wordpress plugin installer
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. A new "Js Crop" option will be available under Appearance > Widgets, where you can add it to your sidebar
+3. A new "Js Crop Block" option will be available under media in blocks section of post and widget. 
   
 
 
@@ -33,7 +33,7 @@ User can then upload the cropped Images which can be access through media page i
 
 = Why can't I customize it ? =
 
-This is the version 1.0 keep reviewing the plugin so I will know what people are looking for, I'm working on other features like letting user to apply filters to their image and edit them.  
+Keep reviewing the plugin so I will know what people are looking for, I'm working on other features like letting user to apply filters to their image and edit them.  
 
 = Is this plugin mobile freindly ? =
 
@@ -41,7 +41,7 @@ It is designed for PC only
 
 = Where can I use this plugin? =
 
-You can use this plugin as widget on sidebar or Footer.
+You can use this plugin as block on post or widget.
 
 
 == Screenshots ==
@@ -55,4 +55,8 @@ You can use this plugin as widget on sidebar or Footer.
 
 = 1.0.0 =
 * First stable version 
+
+= 2.0.0 =
+* Block added 
+* Legacy widget removed 
 
