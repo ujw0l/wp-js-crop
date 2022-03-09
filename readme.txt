@@ -46,7 +46,7 @@ You can use this plugin as block on post or widget.
 
 == Screenshots ==
 
-1.	Widget on front-end
+1.	Js Crop block on blocks section
 2.	JS Crop in effect 
 
 
