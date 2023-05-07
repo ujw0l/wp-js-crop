@@ -1,5 +1,6 @@
 === Js Crop ===
 Contributors: ujw0l
+Donate link: https://www.patreon.com/ujw0l/membership
 Tags:  block,Image upload,  Image crop, 
 Requires at least: 5.0
 Tested up to: 6.2.0
