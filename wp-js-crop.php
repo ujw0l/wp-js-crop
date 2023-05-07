@@ -3,7 +3,7 @@
  Plugin Name:Js Crop
  Plugin URI:
  Description: Image cropping plugin for WordPress
- Version: 2.0.0
+ Version: 2.1.0
  Author: Ujwol Bastakoti
  Author URI:https://ujw0l.github.io/
 Text Domain:  wp-js-crop
@@ -15,7 +15,7 @@ Text Domain:  wp-js-crop
 
         add_action( 'wp_enqueue_scripts', array($this,'jsCropEnequeueScripts') );
         add_action('wp_ajax_process_image', array($this ,'processImage'));
-    	add_action('wp_ajax_nopriv_process_image', array($this ,'processImage'));
+    	  add_action('wp_ajax_nopriv_process_image', array($this ,'processImage'));
         add_action('init', array($this,'registerWpJsCropBlock')); 
      }
 
@@ -104,6 +104,7 @@ Text Domain:  wp-js-crop
 
 
             if(is_user_logged_in()):
+              ob_start();
                 ?>   
      
                 <div style="border:1px dotted rgba(0,0,0,0.5);text-align:center;width: 100%;height: 100px;padding-top: 30px;" id="image-load">
@@ -119,7 +120,8 @@ Text Domain:  wp-js-crop
                 
          <?php
              endif;
-
+ 
+             return ob_get_clean();
 
         }
 
