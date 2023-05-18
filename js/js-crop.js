@@ -38,15 +38,16 @@ class jsCrop {
     }
 
 
-    /*
+    /** 
     * Create overlay and initialize cropping
     *
     *@param img image to be cropped
+    *@param param2 Toolbar settings
+    *@param param3 Adiitional buttons object
     *
     */
 
     createOverlay(img, param2, param3) {
-
 
         let imgType = undefined != param2 && undefined != param2.imageType && 'jpeg' == param2.imageType ? param2.imageType : 'png';
         let imgQuality = undefined != param2 && undefined != param2.imageQuality ? param2.imageQuality : '1';
@@ -63,7 +64,8 @@ class jsCrop {
         let overlayDivEl = document.createElement("div");
         let overlayBgColor = undefined != param2 && undefined != param2.customColor && undefined != param2.customColor.overlayBgColor ? param2.customColor.overlayBgColor : 'rgba(0,0,0,1)';
         overlayDivEl.id = "js-crop-overlay";
-        overlayDivEl.style = `top:0%;left:0%;right:0%;bottom:0%;height:${window.innerHeight}px;width:${window.innerWidth}px;background-color:${overlayBgColor};z-index:100000;position:fixed;`;
+        overlayDivEl.setAttribute('draggable', false);
+        overlayDivEl.style = `user-select: none;top:0%;left:0%;right:0%;bottom:0%;height:${window.innerHeight}px;width:${window.innerWidth}px;background-color:${overlayBgColor};z-index:100000;`;
         document.body.insertBefore(overlayDivEl, document.body.firstChild);
 
         let orgImage = new Image();
@@ -72,7 +74,7 @@ class jsCrop {
         let imgActWidth = orgImage.width;
         let overlayDiv = document.querySelector('#js-crop-overlay');
         let opImgDim = this.getOptimizedImageSize(overlayDiv.offsetWidth, overlayDiv.offsetHeight, imgActWidth, imgActHeight);
-        let imgStyle = `box-shadow:0px 0px 5px rgba(255,255,255,1);display:inline-block;margin:${((overlayDiv.offsetHeight - opImgDim.height) / 2)}px ${(((0.97 * overlayDiv.offsetWidth) - opImgDim.width) / 2)}px;vertical-align:top;`;
+        let imgStyle = `border: 0.5px dotted rgba(255,255,255,1);display:inline-block;margin:${((overlayDiv.offsetHeight - opImgDim.height) / 2)}px ${(((0.97 * overlayDiv.offsetWidth) - opImgDim.width) / 2)}px;vertical-align:top;`;
 
         orgImage.id = "js-crop-image";
         orgImage.style = imgStyle;
@@ -84,7 +86,7 @@ class jsCrop {
         orgImage.setAttribute('data-crop-step', '0');
         orgImage.setAttribute('data-crop-0', orgImage.src)
         orgImage.setAttribute('data-crop-count', '0')
-        orgImage.setAttribute('draggable', 'false');
+        orgImage.setAttribute('draggable', false);
         orgImage.setAttribute('data-dim-ratio', `${imgActWidth / opImgDim.width},${imgActHeight / opImgDim.height}`);
         overlayDiv.appendChild(orgImage);
 
@@ -107,7 +109,7 @@ class jsCrop {
 
     }
 
-    /*
+    /** 
     * Adjust crop overlay on window resize
     *
     *@param e resize event
@@ -152,7 +154,7 @@ class jsCrop {
         }
     }
 
-    /*
+    /**
     * Create toolbar 
     *
     *@param overlayDiv Overlay div object 
@@ -171,18 +173,22 @@ class jsCrop {
 
         let btnFontColor = undefined != param2 && undefined != param2.customColor && undefined != param2.customColor.buttonFontColor ? param2.customColor.buttonFontColor : 'rgba(255,255,255,1)';
         let btnBgColor = undefined != param2 && undefined != param2.customColor && undefined != param2.customColor.buttonBgColor ? param2.customColor.buttonBgColor : 'rgba(0,0,0,1)';
-        let btnStyle = `line-height:1.1;color:${btnFontColor};opacity:0;font-size:300%;cursor:pointer;border-radius:0%;margin-bottom:3px;background-color:${btnBgColor};text-align:center;width:98%;height:${toolbar.offsetWidth - 6}px;border:1px solid ${btnBgColor};box-shadow:-1px -1px 10px ${btnBgColor};`;
-        let btnMouseenter = `this.style.boxShadow ='-2px -2px 10px ${btnBgColor}'; this.style.borderRadius='20%'`;
-        let btnMouseleave = `this.style.boxShadow ='-1px -1px 1px ${btnBgColor}';this.style.borderRadius='25%'`;
+        let btnStyle = `color:${btnFontColor};opacity:0;font-size:300%;cursor:pointer;border-radius:0%;margin-bottom:3px;background-color:${btnBgColor};text-align:center;width:98%;height:${toolbar.offsetWidth - 6}px;border:1px solid ${btnBgColor};box-shadow:-1px -1px 10px ${btnBgColor};`;
 
         let cropIconDiv = document.createElement('div');
         cropIconDiv.id = `start-crop`;
         cropIconDiv.title = `Select area`;
         cropIconDiv.style = btnStyle;
-        cropIconDiv.setAttribute('onmouseenter', btnMouseenter);
-        cropIconDiv.setAttribute('onmouseleave', btnMouseleave);
+        cropIconDiv.addEventListener('mouseenter', e => {
+            e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+            e.target.style.borderRadius = '20%'
+        })
+        cropIconDiv.addEventListener('mouseleave', e => {
+            e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+            e.target.style.borderRadius = '25%'
+        })
         cropIconDiv.innerHTML = '&#8862;';
-        cropIconDiv.addEventListener('click', event => this.addCropEventListener(event));
+        cropIconDiv.addEventListener('click', () => this.addCropEventListener(event));
         toolbar.appendChild(cropIconDiv);
 
 
@@ -191,9 +197,15 @@ class jsCrop {
         revertDiv.title = `Revert to original Image`;
         revertDiv.setAttribute('data-img-dimension', imgDim.height + ',' + imgDim.width);
         revertDiv.setAttribute('data-dim-ratio', imgDim.dimRatio);
-        revertDiv.setAttribute('onmouseenter', btnMouseenter);
-        revertDiv.setAttribute('onmouseleave', btnMouseleave);
-        revertDiv.style = btnStyle;
+        revertDiv.addEventListener('mouseenter', e => {
+            e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+            e.target.style.borderRadius = '20%'
+        })
+        revertDiv.addEventListener('mouseleave', e => {
+            e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+            e.target.style.borderRadius = '25%'
+        })
+        revertDiv.style = btnStyle + 'line-height:1.3;';
         revertDiv.innerHTML = '&#8646;';
         revertDiv.addEventListener('click', event => this.revertToOriginal(event));
         toolbar.appendChild(revertDiv);
@@ -201,9 +213,15 @@ class jsCrop {
         let prevStepDiv = document.createElement('div');
         prevStepDiv.id = `previous-step`;
         prevStepDiv.title = `Revert to previous crop`;
-        prevStepDiv.style = btnStyle;
-        prevStepDiv.setAttribute('onmouseenter', btnMouseenter);
-        prevStepDiv.setAttribute('onmouseleave', btnMouseleave);
+        prevStepDiv.style = btnStyle + 'line-height:1.4;';
+        prevStepDiv.addEventListener('mouseenter', e => {
+            e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+            e.target.style.borderRadius = '20%'
+        })
+        prevStepDiv.addEventListener('mouseleave', e => {
+            e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+            e.target.style.borderRadius = '25%'
+        })
         prevStepDiv.innerHTML = '&#10550;';
         prevStepDiv.addEventListener('click', event => this.restorePreviousCrop(event));
         toolbar.appendChild(prevStepDiv);
@@ -211,9 +229,15 @@ class jsCrop {
         let nextStepDiv = document.createElement('div');
         nextStepDiv.id = `next-step`;
         nextStepDiv.title = `Restore last crop`;
-        nextStepDiv.style = btnStyle;
-        nextStepDiv.setAttribute('onmouseenter', btnMouseenter);
-        nextStepDiv.setAttribute('onmouseleave', btnMouseleave);
+        nextStepDiv.style = btnStyle + 'line-height:1.4;';
+        nextStepDiv.addEventListener('mouseenter', e => {
+            e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+            e.target.style.borderRadius = '20%'
+        })
+        nextStepDiv.addEventListener('mouseleave', e => {
+            e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+            e.target.style.borderRadius = '25%'
+        })
         nextStepDiv.innerHTML = '&#10551;';
         nextStepDiv.addEventListener('click', event => this.restoreNextCrop(event));
         toolbar.appendChild(nextStepDiv);
@@ -225,9 +249,15 @@ class jsCrop {
                 let saveImgDiv = document.createElement('div');
                 saveImgDiv.id = `save-image`;
                 saveImgDiv.title = `Save Image`;
-                saveImgDiv.style = btnStyle;
-                saveImgDiv.setAttribute('onmouseenter', btnMouseenter);
-                saveImgDiv.setAttribute('onmouseleave', btnMouseleave);
+                saveImgDiv.style = btnStyle + 'line-height:1;';
+                saveImgDiv.addEventListener('mouseenter', e => {
+                    e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+                    e.target.style.borderRadius = '20%'
+                })
+                saveImgDiv.addEventListener('mouseleave', e => {
+                    e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+                    e.target.style.borderRadius = '25%'
+                })
                 saveImgDiv.innerHTML = '&#10515;';
                 saveImgDiv.addEventListener('click', () => {
                     let downloadLink = document.createElement('a');
@@ -242,8 +272,14 @@ class jsCrop {
                 let extBtnDiv = document.createElement('div');
                 extBtnDiv.id = `ext-button`;
                 extBtnDiv.style = undefined != param2.extButton.buttonCSS ? btnStyle + param2.extButton.buttonCSS : btnStyle;
-                extBtnDiv.setAttribute('onmouseenter', btnMouseenter);
-                extBtnDiv.setAttribute('onmouseleave', btnMouseleave);
+                extBtnDiv.addEventListener('mouseenter', e => {
+                    e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+                    e.target.style.borderRadius = '20%'
+                })
+                extBtnDiv.addEventListener('mouseleave', e => {
+                    e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+                    e.target.style.borderRadius = '25%'
+                })
                 extBtnDiv.title = param2.extButton.buttonTitle ? param2.extButton.buttonTitle : 'Extension';
                 extBtnDiv.innerHTML = param2.extButton.buttonText ? param2.extButton.buttonText : 'ext';
                 extBtnDiv.addEventListener('click', () => param2.extButton.callBack(this.currentImgToBlob()));
@@ -253,9 +289,15 @@ class jsCrop {
             let saveImgDiv = document.createElement('div');
             saveImgDiv.id = `save-image`;
             saveImgDiv.title = `Save Image`;
-            saveImgDiv.style = btnStyle;
-            saveImgDiv.setAttribute('onmouseenter', btnMouseenter);
-            saveImgDiv.setAttribute('onmouseleave', btnMouseleave);
+            saveImgDiv.style = btnStyle + 'line-height:1;';
+            saveImgDiv.addEventListener('mouseenter', e => {
+                e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+                e.target.style.borderRadius = '20%'
+            })
+            saveImgDiv.addEventListener('mouseleave', e => {
+                e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+                e.target.style.borderRadius = '25%'
+            })
             saveImgDiv.innerHTML = '&#10515;';
             saveImgDiv.addEventListener('click', () => {
                 let downloadLink = document.createElement('a');
@@ -272,8 +314,14 @@ class jsCrop {
                 let addBtnDiv = document.createElement('div');
                 addBtnDiv.id = `ext-button-${i}`;
                 addBtnDiv.style = undefined != x.buttonCSS ? btnStyle + x.buttonCSS : btnStyle;
-                addBtnDiv.setAttribute('onmouseenter', btnMouseenter);
-                addBtnDiv.setAttribute('onmouseleave', btnMouseleave);
+                addBtnDiv.addEventListener('mouseenter', e => {
+                    e.target.style.boxShadow = `-2px -2px 10px ${btnBgColor}`;
+                    e.target.style.borderRadius = '20%'
+                })
+                addBtnDiv.addEventListener('mouseleave', e => {
+                    e.target.style.boxShadow = `-1px -1px 1px ${btnBgColor}`;
+                    e.target.style.borderRadius = '25%'
+                })
                 addBtnDiv.title = x.buttonTitle ? x.buttonTitle : `Button ${i + 1}`;
                 addBtnDiv.innerHTML = x.buttonText ? x.buttonText : `ext`;
                 if ('function' == typeof (x.callBack)) {
@@ -314,10 +362,9 @@ class jsCrop {
 
 
 
-    /*
-    * Active crop area select
-    *
-    *@param e  Select area button click event
+    /** 
+     * Active crop area select
+     * @param e  Select area button click event
     *
     */
 
@@ -328,9 +375,18 @@ class jsCrop {
             imgEl.style.cursor = 'crosshair';
             imgEl.setAttribute('data-crop-status', `active`);
             imgEl.addEventListener("mousedown", event => {
+
+                let cropRect = document.querySelector('#cropRect');
+
+                if(null != cropRect){
+                    cropRect.remove();
+                }
+
+
                 event.target.setAttribute('data-start-co', `${event.offsetX},${event.offsetY}`);
                 event.target.setAttribute('data-mouse-status', 'down');
-                event.target.addEventListener('mousemove', event => this.createCropBox(event));
+                event.target.addEventListener('mousemove', event => {this.createCropBox(event)});
+
 
             });
             e.target.innerHTML = '&#9747;';
@@ -351,12 +407,10 @@ class jsCrop {
     }
 
 
-    /*
-    * Revert to original image
-    *
-    *@param e  Button click event
-    *
-    */
+    /**
+     * Revert to original image
+     * @param e  Button click event
+     */
 
     revertToOriginal(e) {
         let overlayDiv = document.querySelector('#js-crop-overlay');
@@ -383,12 +437,12 @@ class jsCrop {
     }
 
 
-    /*
-    * Resotre previous crop step
-    *
-    *@param e button click event
-    *
-    */
+    /**
+     * Resotre previous crop step
+     * 
+     * @param e button click event
+     */
+
     restorePreviousCrop(e) {
         let imgEl = document.querySelector('#js-crop-image');
         let curCropStep = parseInt(imgEl.getAttribute('data-crop-step'));
@@ -408,12 +462,12 @@ class jsCrop {
         }
     }
 
-    /*
+    /**
      * Resotre next crop step
-     *
      *@param e button click event
-     *
      */
+
+
 
     restoreNextCrop(e) {
         let imgEl = document.querySelector('#js-crop-image');
@@ -431,15 +485,15 @@ class jsCrop {
                 imgEl.height = opImgDim.height;
                 imgEl.width = opImgDim.width;
                 imgEl.src = bufferImg.src;
-
+                console.log(imgEl.style.margin);
             });
         }
     }
 
-    /*
-    * Restore current crop state to blob
-    *
-    */
+    /**
+     *  Restore current crop state to blob
+     */
+
     currentImgToBlob() {
         let loadedImg = document.querySelector('#js-crop-image');
         let origImgRatio = loadedImg.getAttribute('data-dim-ratio').split(',');
@@ -458,9 +512,9 @@ class jsCrop {
         return tempCanv.toDataURL(imgType, imgQuality);
     }
 
-    /*
-   * Close overlay on close button click
-   */
+    /** 
+    * Close overlay on close button click
+    */
 
     closeOverlay() {
         document.body.removeChild(document.querySelector('#js-crop-overlay'));
@@ -469,13 +523,15 @@ class jsCrop {
         document.querySelector('head').removeChild(document.querySelector('#ctc-scroll-css'));
     }
 
-    /*
-    *End crop on crop button click
+    /** 
+     * End crop on crop button click
     */
+
 
     endCrop() {
 
         let cropRect = document.querySelector('#cropRect');
+        
         if (undefined != cropRect) {
             let startCo = cropRect.getAttribute('data-start-xy').split(',');
             let cropImg = document.querySelector('#js-crop-image');
@@ -519,12 +575,12 @@ class jsCrop {
 
     }
 
-    /*
-    * Create cropbox on button click
-    *
+    /** 
+     * Create cropbox on button click
     *@param e mousmover event
-    *
+     * 
     */
+
 
     createCropBox(e) {
         let imgEl = document.querySelector("#js-crop-image");
@@ -533,41 +589,289 @@ class jsCrop {
             if (undefined != par) {
                 let cropRect = document.querySelector('#cropRect');
                 if (undefined == cropRect) {
-                    cropRect = document.createElement('canvas');
+                    cropRect = document.createElement('div');
+                    cropRect.setAttribute('draggable',false);
                     cropRect.id = 'cropRect';
-                    cropRect.style = `z-index:1001000;cursor:crosshair;position:absolute;border:1px dotted rgba(255,255,255,1);box-shadow:0px 0px 10px rgba(0,0,0,1);left:${parseFloat(imgEl.style.marginLeft) + par.startX}px;top:${parseFloat(imgEl.style.marginTop) + par.startY}px;width:${par.width}px;height:${par.height}px;`;
+                    cropRect.style = `z-index:1001000;cursor:crosshair;position:absolute;border:1px dashed rgba(255,255,255,1);box-shadow:0px 0px 10px rgba(0,0,0,1);left:${parseFloat(imgEl.style.marginLeft) + par.startX}px;top:${parseFloat(imgEl.style.marginTop) + par.startY}px;width:${par.width}px;height:${par.height}px;`;
+                    cropRect.addEventListener("dragover", e => e.preventDefault());
                     cropRect.setAttribute('data-start-xy', par.startX + ',' + par.startY);
                     imgEl.parentNode.insertBefore(cropRect, imgEl);
                     cropRect.addEventListener('mousedown', () => imgEl.setAttribute('data-mouse-status', 'down'));
                     cropRect.addEventListener('mouseup', () => imgEl.setAttribute('data-mouse-status', 'up'));
-                    cropRect.addEventListener('mousemove', event => {
+                    this.addResizeBoxes(cropRect, { width: cropRect.offsetWidth, height: cropRect.offsetHeight },e,imgEl);
+                    cropRect.addEventListener('mousemove', e => {
                         if ('down' == imgEl.getAttribute('data-mouse-status')) {
-                            event.target.style.width = event.offsetX + 'px';
-                            event.target.style.height = event.offsetY + 'px';
+                            this.addResizeBoxes(cropRect, { width: cropRect.offsetWidth, height: cropRect.offsetHeight },e,imgEl);
+                            
                         }
                     });
+
                 } else {
-                    cropRect.style.left = (parseFloat(imgEl.style.marginLeft) + par.startX) + 'px';
-                    cropRect.style.top = (parseFloat(imgEl.style.marginTop) + par.startY) + 'px';
-                    cropRect.style.height = par.height + 'px';
-                    cropRect.style.width = par.width + 'px';
-                    cropRect.setAttribute('data-start-xy', par.startX + ',' + par.startY);
+                    if ('down' == imgEl.getAttribute('data-mouse-status') && null == cropRect.getAttribute('data-resize') ) {
+                        cropRect.style.left = (parseFloat(imgEl.style.marginLeft) + par.startX) + 'px';
+                        cropRect.style.top = (parseFloat(imgEl.style.marginTop) + par.startY) + 'px';
+                        cropRect.style.height = par.height + 'px';
+                        cropRect.style.width = par.width + 'px';
+                        cropRect.setAttribute('data-start-xy', par.startX + ',' + par.startY);
+                        this.addResizeBoxes(cropRect, par,e,imgEl);
+                    }
                 }
             }
         }
     }
 
 
+  
+
+    /**
+     * Add and reposition resize boxes
+     * 
+     * @param cropRect Crop slection area
+     * @param imgEl Main image element
+     * @param par Cropbox height width object
+     */
+    addResizeBoxes(cropRect, par,e, imgEl) {
 
 
+        let boxStyle = `background-color :rgba(0,0,0,0.7);width:10px;height:10px;border:1px solid rgba(255,255,255,255);`;
+        let resizeBoxes = cropRect.querySelectorAll('span');
+     
+
+        if (0 === resizeBoxes.length) {
+            let nwseResizeOne = document.createElement('span');
+            nwseResizeOne.style = boxStyle + `cursor:nwse-resize;margin-left:-6px;margin-top:-6px;position:absolute;position:absolute;`
+            nwseResizeOne.id = "nwse-resize-one";
+            nwseResizeOne.setAttribute('draggable', false)
+            nwseResizeOne.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "nwse-resize-one")
+            })
+            nwseResizeOne.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));
+            cropRect.appendChild(nwseResizeOne);
+
+            let nsResizeOne = document.createElement('span');
+            nsResizeOne.style = boxStyle + `cursor:ns-resize;margin-left:${par.width / 2}px; margin-top: -7px; position:absolute;`
+            nsResizeOne.id = "ns-resize-one";
+            nsResizeOne.setAttribute('draggable', false)
+            nsResizeOne.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "ns-resize-one")
+            })
+            nsResizeOne.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));
+            cropRect.appendChild(nsResizeOne);
+
+            let neswResizeOne = document.createElement('span');
+            neswResizeOne.style = boxStyle + `cursor:nesw-resize;margin-left:${par.width - 6}px; margin-top: -6px; position:absolute;`
+            neswResizeOne.id = 'nesw-resize-one';
+            neswResizeOne.setAttribute('draggable', false)
+            neswResizeOne.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "nesw-resize-one")
+            })
+            neswResizeOne.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));;
+            cropRect.appendChild(neswResizeOne);
+
+            let ewResizeOne = document.createElement('span');
+            ewResizeOne.style = boxStyle + `cursor:ew-resize;margin-left:${par.width - 7}px; margin-top: ${(par.height / 2) - 7}px; position:absolute;`
+            ewResizeOne.id = 'ew-resize-one';
+            ewResizeOne.setAttribute('draggable', false)
+            ewResizeOne.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "ew-resize-one")})
+            ewResizeOne.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));;
+            cropRect.appendChild(ewResizeOne);
+
+            let nwseResizeTwo = document.createElement('span');
+            nwseResizeTwo.style = boxStyle + `cursor:nwse-resize;margin-left:${par.width - 6}px; margin-top: ${par.height - 6}px; position:absolute;`
+            nwseResizeTwo.id = 'nwse-resize-two';
+            nwseResizeTwo.setAttribute('draggable', false)
+            nwseResizeTwo.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "nwse-resize-two")
+            })
+            nwseResizeTwo.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));
+            cropRect.appendChild(nwseResizeTwo);
+
+            let nsResizeTwo = document.createElement('span');
+            nsResizeTwo.style = boxStyle + `cursor:ns-resize;margin-left:${(par.width / 2) - 6}px; margin-top: ${par.height - 7}px; position:absolute;`
+            nsResizeTwo.id = 'ns-resize-two';
+            nsResizeTwo.setAttribute('draggable', false)
+            nsResizeTwo.addEventListener('mousedown', () =>{ 
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "ns-resize-two")})
+            nsResizeTwo.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));
+            cropRect.appendChild(nsResizeTwo);
+
+            let neswResizeTwo = document.createElement('span');
+            neswResizeTwo.style = boxStyle + `cursor:nesw-resize;margin-left:-7px; margin-top:${par.height - 7}px;position:absolute;`
+            neswResizeTwo.id = 'nesw-resize-two';
+            neswResizeTwo.setAttribute('draggable', false)
+            neswResizeTwo.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "nesw-resize-two")})
+            neswResizeTwo.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));;
+            cropRect.appendChild(neswResizeTwo);
+
+            let ewResizeTwo = document.createElement('span');
+            ewResizeTwo.style = boxStyle + `cursor:ew-resize;margin-left:-6px; margin-top: ${(par.height / 2) - 6}px; position:absolute;`
+            ewResizeTwo.id = 'ew-resize-two';
+            ewResizeTwo.setAttribute('draggable', false)
+            ewResizeTwo.addEventListener('mousedown', () => {
+                cropRect.setAttribute('data-prev-mousepos','')
+                
+                imgEl.setAttribute('data-mouse-status','up')
+                cropRect.setAttribute('data-resize', "ew-resize-two")})
+            ewResizeTwo.addEventListener('mouseup', () => cropRect.setAttribute('data-resize', ""));;
+            cropRect.appendChild(ewResizeTwo);
+        } else {
+
+           if( null == cropRect.getAttribute('data-resize')){
+            cropRect.querySelector('#nwse-resize-one').style = boxStyle + `cursor:nwse-resize;margin-left:-6px;margin-top:-6px;position:absolute;`;
+            cropRect.querySelector('#ns-resize-one').style = boxStyle + `cursor:ns-resize;margin-left:${(par.width / 2) - 6}px; margin-top: -7px; position:absolute;`;
+            cropRect.querySelector('#nesw-resize-one').style = boxStyle + `cursor:nesw-resize;margin-left:${par.width - 6}px; margin-top: -6px;position:absolute; `
+            cropRect.querySelector('#ew-resize-one').style = boxStyle + `cursor:ew-resize;margin-left:${par.width - 7}px; margin-top: ${(par.height / 2) - 7}px;position:absolute;`
+            cropRect.querySelector('#nwse-resize-two').style = boxStyle + `cursor:nwse-resize;margin-left:${par.width - 7}px; margin-top: ${par.height - 7}px;position:absolute; `;
+            cropRect.querySelector('#ns-resize-two').style = boxStyle + `cursor:ns-resize;margin-left:${(par.width / 2) - 6}px; margin-top: ${par.height - 7}px;position:absolute; `;
+            cropRect.querySelector('#nesw-resize-two').style = boxStyle + `cursor:nesw-resize;margin-left:-7px; margin-top:${par.height - 7}px;position:absolute;`;
+            cropRect.querySelector('#ew-resize-two').style = boxStyle + `cursor:ew-resize;margin-left:-6px; margin-top: ${(par.height / 2) - 6}px; position:absolute;`;
+          
+        }else{ 
+
+            let imgBdRect = imgEl.getBoundingClientRect();  
+            let bdRect = cropRect.getBoundingClientRect();  
+
+          if('cropRect' != e.target.id && imgBdRect.x <= e.clientX && imgBdRect.y <= e.clientY && (imgBdRect.x+imgBdRect.width) >= e.clientX && (imgBdRect.y+imgBdRect.height) >= e.clientY    ){
+         
+
+
+            if( null != cropRect.getAttribute('data-prev-mousepos') ){
+            
+            let prevPos =  cropRect.getAttribute('data-prev-mousepos').split('-');
+               
+                let xDiff =   Math.abs(parseInt( prevPos[0] ) -  e.clientX);
+                let yDiff =  Math.abs(parseInt( prevPos[1] ) -  e.clientY);
+
+             switch(cropRect.getAttribute('data-resize')){
+                case "nwse-resize-one":
+               if(bdRect.x > e.clientX && bdRect.y > e.clientY){      
+                cropRect.style.top = (parseInt(cropRect.style.top)-yDiff )+'px';
+                cropRect.style.left = (parseInt(cropRect.style.left)-xDiff)+'px';
+                cropRect.style.height =  (parseInt(cropRect.style.height) + yDiff)+'px';
+                cropRect.style.width = (parseInt(cropRect.style.width)+xDiff)+'px';
+               }else{
+                cropRect.style.top = (parseInt(cropRect.style.top)+yDiff )+'px';
+                cropRect.style.left = (parseInt(cropRect.style.left)+xDiff)+'px';
+                cropRect.style.height =  (parseInt(cropRect.style.height) - yDiff)+'px';
+                cropRect.style.width = (parseInt(cropRect.style.width)-xDiff)+'px';
+               }
+
+                break;
+                case "ns-resize-one":
+                    if( bdRect.y > e.clientY){  
+                        cropRect.style.top = (parseInt(cropRect.style.top)-yDiff)+'px';
+                        cropRect.style.height =  (parseInt(cropRect.style.height) + yDiff)+'px';
+                    }else{
+
+                        cropRect.style.top = (parseInt(cropRect.style.top)+yDiff)+'px';
+                        cropRect.style.height =  (parseInt(cropRect.style.height) - yDiff)+'px';
+                        
+                    }
+                break;
+                case "nesw-resize-one":
+                    if(bdRect.y > e.clientY ){
+                        cropRect.style.top = (parseInt(cropRect.style.top)-yDiff )+'px';
+                        cropRect.style.height =  (parseInt(cropRect.style.height) + yDiff)+'px';
+                        cropRect.style.width = (parseInt(cropRect.style.width)+xDiff)+'px';
+                    }else{
+                        cropRect.style.top = (parseInt(cropRect.style.top)+yDiff )+'px';
+                        cropRect.style.height =  (parseInt(cropRect.style.height) - yDiff)+'px';
+                        cropRect.style.width = (parseInt(cropRect.style.width)-xDiff)+'px'; 
+                    }
+            
+                break;
+                case "ew-resize-one":
+                    if( (bdRect.x+ parseInt(bdRect.width) ) < e.clientX ){
+                        cropRect.style.width = (parseInt(cropRect.style.width)+xDiff)+'px';
+                    }else{
+
+                        cropRect.style.width = (parseInt(cropRect.style.width)-xDiff)+'px';
+                    }
+                        
+                   
+                break;
+                case "nwse-resize-two":
+                    if( (bdRect.x+ parseInt(bdRect.width) ) < e.clientX ){ 
+                cropRect.style.height =  (parseInt(cropRect.style.height)+ yDiff)+'px';
+                cropRect.style.width = (parseInt(cropRect.style.width)+xDiff)+'px';
+                    }else{
+
+                        cropRect.style.height =  (parseInt(cropRect.style.height)- yDiff)+'px';
+                        cropRect.style.width = (parseInt(cropRect.style.width)-xDiff)+'px';
+
+                    }
+                break;
+                case "ns-resize-two":
+                    if( (bdRect.y+ parseInt(bdRect.height) ) < e.clientY ){  
+                    cropRect.style.height =  (parseInt(cropRect.style.height) + yDiff)+'px';
+                    }else{
+                        cropRect.style.height =  (parseInt(cropRect.style.height) - yDiff)+'px';
+                    } 
+                break;
+                case "nesw-resize-two":
+                    if((bdRect.y+parseInt(bdRect.height)) < e.clientY){ 
+                    cropRect.style.left = (parseInt(cropRect.style.left)-xDiff)+'px';
+                    cropRect.style.height =  (parseInt(cropRect.style.height)+ yDiff)+'px';
+                    cropRect.style.width = (parseInt(cropRect.style.width)+xDiff)+'px';
+                    }else{
+                        cropRect.style.left = (parseInt(cropRect.style.left)+xDiff)+'px';
+                    cropRect.style.height =  (parseInt(cropRect.style.height)- yDiff)+'px';
+                    cropRect.style.width = (parseInt(cropRect.style.width)-xDiff)+'px';
+                    }
+                break;
+                case "ew-resize-two":
+                    if(bdRect.x > e.clientX){
+                    cropRect.style.left = (parseInt(cropRect.style.left)-xDiff)+'px';
+                    cropRect.style.width = (parseInt(cropRect.style.width)+xDiff)+'px';
+                    }else{
+                        cropRect.style.left = (parseInt(cropRect.style.left)+xDiff)+'px';
+                        cropRect.style.width = (parseInt(cropRect.style.width)-xDiff)+'px';
+                    }
+                break;
+             }
+            }
+
+         
+                    cropRect.setAttribute('data-start-xy', (bdRect.x - imgBdRect.x ) + ',' + (bdRect.y - imgBdRect.y));
+                    cropRect.querySelector('#nwse-resize-one').style = boxStyle + `cursor:nwse-resize;margin-left:-6px;margin-top:-6px;position:absolute;`;
+                    cropRect.querySelector('#ns-resize-one').style = boxStyle + `cursor:ns-resize;margin-left:${( cropRect.offsetWidth / 2) - 6}px; margin-top: -7px; position:absolute;`;
+                    cropRect.querySelector('#nesw-resize-one').style = boxStyle + `cursor:nesw-resize;margin-left:${cropRect.offsetWidth - 6}px; margin-top: -6px;position:absolute; `
+                    cropRect.querySelector('#ew-resize-one').style = boxStyle + `cursor:ew-resize;margin-left:${cropRect.offsetWidth - 7}px; margin-top: ${(cropRect.offsetHeight/ 2) - 7}px;position:absolute;`
+                    cropRect.querySelector('#nwse-resize-two').style = boxStyle + `cursor:nwse-resize;margin-left:${cropRect.offsetWidth - 7}px; margin-top: ${cropRect.offsetHeight - 7}px;position:absolute; `;
+                    cropRect.querySelector('#ns-resize-two').style = boxStyle + `cursor:ns-resize;margin-left:${(cropRect.offsetWidth / 2) - 6}px; margin-top: ${cropRect.offsetHeight - 7}px;position:absolute; `;
+                    cropRect.querySelector('#nesw-resize-two').style = boxStyle + `cursor:nesw-resize;margin-left:-7px; margin-top:${cropRect.offsetHeight - 7}px;position:absolute;`;
+                    cropRect.querySelector('#ew-resize-two').style = boxStyle + `cursor:ew-resize;margin-left:-6px; margin-top: ${(cropRect.offsetHeight / 2) - 6}px; position:absolute;`;
+                    cropRect.setAttribute('data-prev-mousepos',`${e.clientX}-${e.clientY}`);
+                    
+                   
+            }
+            
+        }
+    }
+}
+                
     /*
-    * Optimize image size to fit screen
-    *
     *@param screenWidth  window.innerWidth
     *@param screenHeight  window.innerHeight
     *@param imageActualWidth  actual width of image
     *@param imageActualHeight  actual height of image
-    *@return object object with optimized image width and height
+    *@return  oobject with optimized image width and height
     */
     getOptimizedImageSize(screenWidth, screenHeight, imageActualWidth, imageActualHeight) {
 
@@ -650,7 +954,7 @@ class jsCrop {
     }
 
 
-    /*
+    /** 
     * Set crop canvas coordinate
     *
     *@param e mousmove event
@@ -712,12 +1016,12 @@ class jsCrop {
 
     }
 
-    /*
+    /** 
     *Handle keystroke event
-    * 
-    *@param e Key stroke event
+    *@param event Key stroke event
     *
     */
+
     onKeyStroke(event) {
         let cropRect = document.querySelector('#cropRect');
 
@@ -768,3 +1072,4 @@ class jsCrop {
 
 
 }
+

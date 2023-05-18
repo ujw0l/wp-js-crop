@@ -5,7 +5,7 @@ Tags:  block,Image upload,  Image crop,
 Requires at least: 5.0
 Tested up to: 6.2.0
 Requires PHP: 7.0
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2
 
 Plugin which enables user to take edit image and upload it which can be access at media page, 
