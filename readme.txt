@@ -1,4 +1,4 @@
-=== Js Crop ===
+=== JS Crop ===
 Contributors: ujw0l
 Donate link: https://www.patreon.com/ujw0l/membership
 Tags:  block,Image upload,  Image crop, 
@@ -8,7 +8,7 @@ Requires PHP: 7.0
 Stable tag: 2.1.1
 License: GPLv2
 
-Plugin which enables user to take edit image and upload it which can be access at media page, 
+Plugin which enables user to take edit image and upload it which can be access with media page, 
 
 
 == Description ==
@@ -62,4 +62,6 @@ You can use this plugin as block on post or widget.
 * Legacy widget removed 
  =2.1.0=
  *Minor fixes
-
+ =2.5.0=
+ *JSX Support for Development
+ *Ability to change font color and background color

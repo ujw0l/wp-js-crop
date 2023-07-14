@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wp-js-crop/js-crop-block",
+  "version": "2.5.0",
+  "title": "JS Crop",
+  "category": "media",
+  "icon": "image-crop",
+  "description": "Gutenberg block which lets user to crop image on frontend and upload it.",
+  "supports": {
+    "html": false
+  },
+  "textdomain": "wp-js-crop",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./frontend.js"
+}
