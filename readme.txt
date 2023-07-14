@@ -8,7 +8,7 @@ Requires PHP: 7.0
 Stable tag: 2.1.1
 License: GPLv2
 
-Plugin which enables user to take edit image and upload it which can be access at media page, 
+Plugin which enables user to take edit image and upload it which can be access with media page, 
 
 
 == Description ==
