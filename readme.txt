@@ -1,4 +1,4 @@
-=== Js Crop ===
+=== JS Crop ===
 Contributors: ujw0l
 Donate link: https://www.patreon.com/ujw0l/membership
 Tags:  block,Image upload,  Image crop, 
@@ -62,4 +62,6 @@ You can use this plugin as block on post or widget.
 * Legacy widget removed 
  =2.1.0=
  *Minor fixes
-
+ =2.5.0=
+ *JSX Support for Development
+ *Ability to change font color and background color

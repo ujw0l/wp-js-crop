@@ -1,26 +1,23 @@
 {
-  "name": "wp-js-crop",
-  "version": "1.0.0",
-  "description": "Wordpress plugin to crop and upload images",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ujw0l/wp-js-crop.git"
-  },
-  "keywords": [
-    "worpress-plugin",
-    "crop-image"
-  ],
-  "author": "UjW0L",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/ujw0l/wp-js-crop/issues"
-  },
-  "homepage": "https://wordpress.org/plugins/js-crop/",
-  "dependencies": {
-    "js-crop": "^1.5.0"
-  }
+	"name": "js-crop",
+	"version": "0.1.0",
+	"description": "Example block scaffolded with Create Block tool.",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^26.8.0"
+	},
+	"dependencies": {
+		"js-crop": "^2.5.5"
+	}
 }
