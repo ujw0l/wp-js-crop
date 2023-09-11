@@ -84,8 +84,8 @@ Text Domain:  wp-js-crop
 		register_block_type( __DIR__ . '/build',
 		array(
 			'attributes' => array(
-									"fntColor" => ["type"=>"String", "default"=>"rgba(0,0,0,1)"],
-									"bgColor" => ["type"=>"String","default"=>"rgba(255,255,255,1)"] 
+									"fntColor" => ["type"=>"string", "default"=>"rgba(0,0,0,1)"],
+									"bgColor" => ["type"=>"string","default"=>"rgba(255,255,255,1)"] 
 			),
 			"view_script" => "wpJsCrop",
 			"render_callback"=> array($this, 'jsCropBlockRender') )

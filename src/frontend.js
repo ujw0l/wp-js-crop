@@ -8,9 +8,9 @@ window.addEventListener("DOMContentLoaded", () => {
         saveButton: false,
         customColor: {
             overlayBgColor : cont.style.backgroundColor,
-            toolbarBgColor: cont.style.backgroundColor ,
-            buttonBgColor: cont.style.backgroundColor ,
-            buttonFontColor : cont.querySelector('p').style.color,
+            toolbarBgColor: cont.querySelector('p').style.color,
+            buttonBgColor: cont.querySelector('p').style.color,
+            buttonFontColor : cont.style.backgroundColor ,
 
         }
         
@@ -58,9 +58,9 @@ window.addEventListener("DOMContentLoaded", () => {
                     saveButton: false , 
                     customColor: {
                         overlayBgColor : cont.style.backgroundColor,
-                        toolbarBgColor: cont.style.backgroundColor ,
-                        buttonBgColor: cont.style.backgroundColor ,
-                        buttonFontColor : cont.querySelector('p').style.color,
+                        toolbarBgColor: cont.querySelector('p').style.color,
+                        buttonBgColor:cont.querySelector('p').style.color,
+                        buttonFontColor : cont.style.backgroundColor ,
             
                     }
                 
