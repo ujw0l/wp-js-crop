@@ -65,3 +65,6 @@ You can use this plugin as block on post or widget.
  =2.5.0=
  *JSX Support for Development
  *Ability to change font color and background color
+
+  =2.5.1=
+ *Minor bug fixes
