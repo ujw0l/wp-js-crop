@@ -1,4 +1,4 @@
-import { ColorPicker,PanelBody } from '@wordpress/components';
+import { RangeControl,ColorPicker,PanelBody } from '@wordpress/components';
 
 /**
  * Retrieves the translation of text.
@@ -38,8 +38,8 @@ export default function Edit({attributes,setAttributes}) {
 	return (
 		<>
 		<div { ...useBlockProps() }>
-			<div style={{border: `1px dotted ${attributes.fntColor}`, backgroundColor:attributes.bgColor, textAlign: 'center', width: '100%', height: '100px', paddingTop: '30px'}} >
-                 <p style={{textDecoration:'underline', color:attributes.fntColor, backgroundColor:attributes.bgColor}}> {__("Browse or  Drop image here","wp-js-crop")} </p>
+			<div style={{border: `1px dotted ${attributes.fntColor}`, backgroundColor:attributes.bgColor, textAlign: 'center', width: attributes.blockWd+'px', height: '75px',marginLeft:'auto',marginRight:'auto',display:'block'}} >
+                 <p style={{ color:attributes.fntColor, backgroundColor:attributes.bgColor}}><span style={{textDecoration:'underline'}}>{__("Browse","wp-js-crop")}</span> <span>{__(" or  Drop image here","wp-js-crop")} </span></p>
 			</div>
 
 
@@ -49,6 +49,19 @@ export default function Edit({attributes,setAttributes}) {
 
 		<InspectorControls>
 <PanelBody>
+
+<RangeControl
+				
+				label= {__('Box Width in px',  "image-carousel")}
+				min= {250}
+				max= {600}
+				onChange={ val => {
+					setAttributes({blockWd: val })}}
+				value= {attributes.blockWd}
+
+				/>
+
+
 
 	<div style={{height:"500px"}}>
  <label>{__("Font Color","wp-js-crop").toUpperCase()}</label>

@@ -3,7 +3,7 @@
  Plugin Name:JS Crop
  Plugin URI:
  Description: Image cropping gutenberg block for WordPress
- Version: 2.5.2
+ Version: 2.6.0
  Author: Ujwol Bastakoti
  Author URI:https://ujw0l.github.io/
 Text Domain:  wp-js-crop
@@ -85,7 +85,8 @@ Text Domain:  wp-js-crop
 		array(
 			'attributes' => array(
 									"fntColor" => ["type"=>"string", "default"=>"rgba(0,0,0,1)"],
-									"bgColor" => ["type"=>"string","default"=>"rgba(255,255,255,1)"] 
+									"bgColor" => ["type"=>"string","default"=>"rgba(255,255,255,1)"], 
+                                    "blockWd"=>["type"=>"number","default"=>"300"], 
 			),
 			"view_script" => "wpJsCrop",
 			"render_callback"=> array($this, 'jsCropBlockRender') )
@@ -107,8 +108,8 @@ Text Domain:  wp-js-crop
               ob_start();
                 ?>   
      
-                <div  style="border:1px dotted <?=$atts["fntColor"]?>; background-color: <?=$atts["bgColor"]?> ;text-align:center;width: 100%;height: 100px;padding-top: 30px;" id="image-load">
-                             <p style="color:<?=$atts["fntColor"]?>;" ><a style="color:<?=$atts["fntColor"]?>;"  id="browse-image" href="javascript:void(0)"><?=__('Browse','wp-js-crop')?></a> <?=__('or  Drop image here','wp-js-crop')?></p>
+                <div  style="border:1px dotted <?=$atts["fntColor"]?>; background-color: <?=$atts["bgColor"]?> ;text-align:center;width: <?=$atts['blockWd']?>px;height: 75px;" id="image-load">
+                             <p style="color:<?=$atts["fntColor"]?>;" ><a style="color:<?=$atts["fntColor"]?>;text-decoration:underline"  id="browse-image" href="javascript:void(0)"><?=__('Browse','wp-js-crop')?></a> <?=__('or  Drop image here','wp-js-crop')?></p>
                      <div style="display:none;" id="hide-input"> <input id="upload-img" type="file" accept="image/*" value="" /></div>
                  </div>      
      
