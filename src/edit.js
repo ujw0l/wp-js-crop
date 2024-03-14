@@ -52,7 +52,7 @@ export default function Edit({attributes,setAttributes}) {
 
 <RangeControl
 				
-				label= {__('Box Width in px',  "image-carousel")}
+				label= {__('Box Width in px',  "wp-js-crop")}
 				min= {250}
 				max= {600}
 				onChange={ val => {
