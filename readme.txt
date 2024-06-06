@@ -1,19 +1,23 @@
 === JS Crop ===
 Contributors: ujw0l
 Donate link: https://www.patreon.com/ujw0l/membership
-Tags:  block,Image upload,  Image crop, 
+Tags:  block,Image upload,  Image crop, deep learning
 Requires at least: 5.0
-Tested up to: 6.4.3
+Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 2.6.0
+Stable tag: 3.0.0
 License: GPLv2
 
-Plugin which enables user to take edit image and upload it which can be access with media page, 
+Plugin which enables user to crop image and upload it which can be access with media page, 
 
 
 == Description ==
 Plugin provides the option of cropping image by browsing/draging and droping image on the front end if user is logged in.
 User can then upload the cropped Images which can be access through media page in admin dashboard. 
+User also have ability to smart crop using using deep learning.
+
+= Integrations =
+* Plugin uses third party object classification model YOLO V5 for TensorflowJS.
 
 
 == Installation ==
@@ -71,3 +75,6 @@ You can use this plugin as block on post or widget.
 
    =2.6.0=
  *Ability to change box width
+
+   =3.0.0=
+ *Smart crop using Deep Learning
