@@ -3,7 +3,7 @@
  Plugin Name:JS Crop
  Plugin URI:
  Description: Image cropping gutenberg block for WordPress
- Version: 2.6.0
+ Version: 3.0.0
  Author: Ujwol Bastakoti
  Author URI:https://ujw0l.github.io/
 Text Domain:  wp-js-crop
@@ -13,28 +13,13 @@ Text Domain:  wp-js-crop
  class wpJsCrop{
      public function __construct(){
 
-        add_action( 'wp_enqueue_scripts', array($this,'jsCropEnequeueScripts') );
+      
         add_action('wp_ajax_process_image', array($this ,'processImage'));
     	add_action('wp_ajax_nopriv_process_image', array($this ,'processImage'));
         add_action('init', array($this,'registerWpJsCropBlock')); 
      }
 
-     /**
-      * Since version 2.0.0
-      *
-      *Function to enqueue scripts
-      */
-
-      public function jsCropEnequeueScripts(){
-
-        
-        wp_enqueue_script('wpJsCrop', plugins_url('build/frontend.js',__FILE__ ));
-        wp_localize_script( 'wpJsCrop', 'js_crop_params',array(
-                                                                'my_ajax_url'=> admin_url( 'admin-ajax.php' ),
-                                                               
-        )
-     );
-    }
+   
      /**
       * Since version 2.0.0
       * 
@@ -87,8 +72,8 @@ Text Domain:  wp-js-crop
 									"fntColor" => ["type"=>"string", "default"=>"rgba(0,0,0,1)"],
 									"bgColor" => ["type"=>"string","default"=>"rgba(255,255,255,1)"], 
                                     "blockWd"=>["type"=>"number","default"=>"300"], 
+                                    'ajaxUrl'=>["type"=>"string", "default"=>admin_url( 'admin-ajax.php' )]
 			),
-			"view_script" => "wpJsCrop",
 			"render_callback"=> array($this, 'jsCropBlockRender') )
 	);
 	
@@ -108,7 +93,7 @@ Text Domain:  wp-js-crop
               ob_start();
                 ?>   
      
-                <div  style="border:1px dotted <?=$atts["fntColor"]?>; background-color: <?=$atts["bgColor"]?> ;text-align:center;width: <?=$atts['blockWd']?>px;height: 75px;" id="image-load">
+                <div  style="border:1px dotted <?=$atts["fntColor"]?>; background-color: <?=$atts["bgColor"]?> ;text-align:center;width: <?=$atts['blockWd']?>px;height: 75px;" id="image-load" data-ajax-url="<?=$atts['ajaxUrl']?>">
                              <p style="color:<?=$atts["fntColor"]?>;" ><a style="color:<?=$atts["fntColor"]?>;text-decoration:underline"  id="browse-image" href="javascript:void(0)"><?=__('Browse','wp-js-crop')?></a> <?=__('or  Drop image here','wp-js-crop')?></p>
                      <div style="display:none;" id="hide-input"> <input id="upload-img" type="file" accept="image/*" value="" /></div>
                  </div>      
