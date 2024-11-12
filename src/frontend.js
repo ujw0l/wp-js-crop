@@ -163,6 +163,11 @@ window.addEventListener("DOMContentLoaded", () => {
                     }
                 
                 }, [{
+
+                    buttonText: '🤖',
+                    buttonTitle: 'Smart Crop',
+                    callBack : jsCropSmartCrop,
+                    },{
                     buttonText: '&#9729;',
                     buttonTitle: 'Upload Image',
                     callBack: (imgBlob, cropParams) => {
