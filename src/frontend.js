@@ -64,12 +64,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
        detections.map((x,i)=>{
         let left = parseFloat(img.offsetLeft) + x.x;
-        let top = parseFloat(img.offsetTop)+x.y+35;
+        let top = parseFloat(img.offsetTop)+x.y;
         let box =  document.createElement('span');
         box.classList.add('crop-rect');
         box.id = `crop-box-${i}`;
         box.setAttribute('data-start-xy',x.x+','+x.y);
-        box.style = `left:${left }px;top:${top}px;height:${x.height-8}px;width:${x.width}px;position:absolute;border: 1px dotted rgba(255,255,255,1);z-index:${1000*i}`;
+        box.style = `left:${left }px;top:${top}px;height:${x.height}px;width:${x.width}px;position:absolute;border: 1px dotted rgba(255,255,255,1);z-index:${1000*i}`;
 
         let cropButton = document.createElement('span');
 
@@ -165,11 +165,12 @@ window.addEventListener("DOMContentLoaded", () => {
                 }, [{
                     buttonText: '&#9729;',
                     buttonTitle: 'Upload Image',
-                    relParam: js_crop_params,
                     callBack: (imgBlob, cropParams) => {
 
+                    let ajaxUrl = cont.getAttribute('data-ajax-url'); 
+
                         var xhttp = new XMLHttpRequest();
-                        xhttp.open("POST", cropParams.my_ajax_url, true);
+                        xhttp.open("POST", ajaxUrl , true);
                         xhttp.responseType = "text";
                         xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;');
                         xhttp.addEventListener('load', event => {
