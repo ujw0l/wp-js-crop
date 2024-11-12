@@ -3,7 +3,7 @@
  Plugin Name:JS Crop
  Plugin URI:
  Description: Image cropping gutenberg block for WordPress
- Version: 3.0.0
+ Version: 3.1.0
  Author: Ujwol Bastakoti
  Author URI:https://ujw0l.github.io/
 Text Domain:  wp-js-crop
