@@ -74,9 +74,71 @@ window.addEventListener("DOMContentLoaded", () => {
         let cropButton = document.createElement('span');
 
         
-        cropButton.innerHTML = '&#9986;';
-        cropButton.style = `font-size:25px;height:20px;width:30px; background-color:rgba(255,255,255,1);color:rga(0,0,0,1);border-radius:25%;cursor:pointer;`;
-        cropButton.title = 'Crop';
+cropButton.innerHTML = `
+<svg width="20" height="20" viewBox="0 0 24 24"
+     fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round"
+     stroke-linejoin="round">
+    <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
+    <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+</svg>`;
+cropButton.title = 'Crop image';
+cropButton.setAttribute('aria-label', 'Crop image');
+
+cropButton.style.cssText = `
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 10px;
+
+    background: rgba(20,20,20,0.72);
+    color: #fff;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+    user-select: none;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+`;
+
+cropButton.addEventListener('mouseenter', () => {
+    cropButton.style.background = 'rgba(0,0,0,0.88)';
+    cropButton.style.transform = 'scale(1.08)';
+    cropButton.style.boxShadow = '0 6px 16px rgba(0,0,0,0.35)';
+});
+
+cropButton.addEventListener('mouseleave', () => {
+    cropButton.style.background = 'rgba(20,20,20,0.72)';
+    cropButton.style.transform = 'scale(1)';
+    cropButton.style.boxShadow =
+        '0 4px 12px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.12)';
+});
+
+cropButton.addEventListener('mousedown', () => {
+    cropButton.style.transform = 'scale(0.94)';
+});
+
+cropButton.addEventListener('mouseup', () => {
+    cropButton.style.transform = 'scale(1.08)';
+});
+
         cropButton.addEventListener('click',(e)=>{
             endCrop(box);
             Array.from(document.querySelectorAll('.crop-rect')).map(x=>x.remove())

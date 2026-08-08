@@ -3,9 +3,9 @@ Contributors: ujw0l
 Donate link: https://www.patreon.com/ujw0l/membership
 Tags:  block,Image upload,  Image crop, deep learning
 Requires at least: 5.0
-Tested up to: 6.6
+Tested up to: 7.0
 Requires PHP: 7.0
-Stable tag: 3.1.0
+Stable tag: 3.5.0
 License: GPLv2
 
 Plugin which enables user to crop image and upload it which can be access with media page, 
@@ -81,3 +81,6 @@ You can use this plugin as block on post or widget.
  
     =3.1.0=
  *Minor bux fixes
+
+     =3.1.0=
+ *Better UX and UI
